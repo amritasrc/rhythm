@@ -1,30 +1,47 @@
 import { useState } from "react";
-import { searchSongs } from "../services/youtubeApi";
+import { searchVideos } from "../src/api/youtube";
+import type { YoutubeVideo } from "../src/types/youtube";
 
-const App = () => {
-  const [songs, setSongs] = useState([]);
+export default function App() {
+  const [query, setQuery] = useState("");
+  const [videos, setVideos] = useState<YoutubeVideo[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  async function handleSearch() {
-    const results = await searchSongs("Arijit Singh");
-    setSongs(results);
-    console.log(`Result: ${results}`);
-  }
+  const handleSearch = async () => {
+    if (!query.trim()) return;
+
+    try {
+      setLoading(true);
+      const result = await searchVideos(query);
+      setVideos(result);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="bg-zinc-900 h-screen w-full text-white">
+    <div>
+      <input
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Search music..."
+      />
+
       <button onClick={handleSearch}>Search</button>
 
-      {songs.map((song) => (
-        <div key={song.id.videoId}>
-          <img
-            src={song.snippet.thumbnails.medium.url}
-            alt={song.snippet.title}
-          />
+      {loading && <p>Loading...</p>}
 
-          <h3>{song.snippet.title}</h3>
-        </div>
-      ))}
+      <div>
+        {videos.map((video) => (
+          <div key={video.id}>
+            <img src={video.thumbnail} alt={video.title} width={200} />
+            <h3>{video.title}</h3>
+            <p>{video.channel}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
-};
-
-export default App;
+}
