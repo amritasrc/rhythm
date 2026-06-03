@@ -1,73 +1,43 @@
-````md
 # Rhythm 🎵
 
-Rhythm is a full-stack music streaming web application powered by the YouTube API. Users can discover music, create playlists, like tracks, view listening history, and enjoy a modern music-player experience—all from a clean and responsive interface.
-
-## ✨ Features
-
-### 🎧 Music Playback
-- Search songs using YouTube API
-- Play, pause, skip, and resume tracks
-- Queue management
-- Volume control
-- Progress tracking
-- Shuffle and repeat modes
-
-### 👤 User Accounts
-- User registration and login
-- Secure authentication with JWT
-- Password hashing with bcrypt
-- Protected routes
-
-### ❤️ Personalized Experience
-- Like and unlike songs
-- Save favorite tracks
-- Recently played songs
-- Listening history
-
-### 📂 Playlists
-- Create custom playlists
-- Add/remove songs
-- Edit playlist details
-- Public playlist sharing
-
-### 🎯 Recommendations
-- Personalized recommendations based on:
-  - Liked songs
-  - Listening history
-  - Frequently played artists
-
-### 📱 Responsive Design
-- Desktop support
-- Tablet support
-- Mobile-friendly interface
+**Rhythm** is a modern music player web application built with **React**, **TypeScript**, **Node.js**, and the **YouTube API**. Search for your favorite songs, explore music, and play tracks directly from YouTube through a clean and responsive interface.
 
 ---
 
-## 🏗️ Tech Stack
+## ✨ Features
+
+* 🔍 Search songs using the YouTube Data API
+* 🖼️ Display song thumbnails and details
+* ▶️ Play music using the YouTube IFrame Player API
+* ⏯️ Play and pause controls
+* 📱 Fully responsive design
+* ⚡ Fast and modern user experience
+
+---
+
+## 🛠️ Tech Stack
 
 ### Frontend
-- React
-- React Router
-- Context API / Redux Toolkit
-- Tailwind CSS
-- Axios
+
+* React
+* TypeScript
+* Tailwind CSS
+* React Router
+* Axios
 
 ### Backend
-- Node.js
-- Express.js
+
+* Node.js
+* Express.js
 
 ### Database
-- MongoDB
-- Mongoose
 
-### Authentication
-- JWT (JSON Web Tokens)
-- bcrypt
+* MongoDB
 
-### External APIs
-- YouTube Data API v3
-- YouTube IFrame Player API
+### APIs
+
+* YouTube Data API v3
+* YouTube IFrame Player API
 
 ---
 
@@ -80,25 +50,20 @@ rhythm/
 │   ├── src/
 │   │   ├── components/
 │   │   ├── pages/
-│   │   ├── hooks/
-│   │   ├── context/
 │   │   ├── services/
-│   │   ├── layouts/
-│   │   └── App.jsx
+│   │   ├── hooks/
+│   │   └── App.tsx
 │   │
 │   └── public/
 │
 ├── server/
 │   ├── controllers/
 │   ├── routes/
-│   ├── middleware/
 │   ├── models/
-│   ├── services/
-│   ├── utils/
-│   └── server.js
+│   ├── middleware/
+│   └── server.ts
 │
-├── README.md
-└── package.json
+└── README.md
 ```
 
 ---
@@ -107,9 +72,13 @@ rhythm/
 
 ### Prerequisites
 
-- Node.js
-- MongoDB
-- YouTube API Key
+Make sure you have the following installed:
+
+* Node.js
+* MongoDB
+* YouTube API Key
+
+---
 
 ### Clone the Repository
 
@@ -117,6 +86,8 @@ rhythm/
 git clone https://github.com/ankitsensei/rhythm.git
 cd rhythm
 ```
+
+---
 
 ### Install Dependencies
 
@@ -138,70 +109,58 @@ npm install
 
 ## 🔑 Environment Variables
 
-Create a `.env` file inside the server directory.
+Create a `.env` file and add the following variables:
 
 ```env
-PORT=5000
+VITE_YOUTUBE_API_KEY=your_youtube_api_key
 
 MONGO_URI=your_mongodb_connection_string
 
-JWT_SECRET=your_jwt_secret
-
-YOUTUBE_API_KEY=your_youtube_api_key
+PORT=5000
 ```
 
 ---
 
-## ▶️ Running the Project
+## ▶️ Running the Application
 
-### Start Backend
+### Start Backend Server
 
 ```bash
 cd server
 npm run dev
 ```
 
-### Start Frontend
+### Start Frontend Application
 
 ```bash
 cd client
 npm run dev
 ```
 
-The application should now be running locally.
+Open your browser and visit:
+
+```txt
+http://localhost:5173
+```
 
 ---
 
-## 📌 Roadmap
+## 🎯 Future Improvements
 
-### Phase 1
-- [x] Authentication
-- [x] Search songs
-- [x] Music player
-- [x] Like songs
-- [x] Playlists
-
-### Phase 2
-- [x] Recently played
-- [x] Listening history
-- [x] Queue management
-- [x] Shuffle & repeat
-
-### Phase 3
-- [x] Playlist sharing
-- [x] Public profiles
-- [x] Follow users
-
-### Phase 4
-- [x] Smart recommendations
-- [x] Trending tracks
-- [x] AI-powered discovery
+* User Authentication
+* Liked Songs
+* Custom Playlists
+* Recently Played Songs
+* Listening History
+* Recommendations
+* Queue Management
+* Shuffle & Repeat Controls
 
 ---
 
 ## ⚠️ Disclaimer
 
-Rhythm uses YouTube APIs for music discovery and playback. All media content belongs to its respective owners. This project does not host, store, or redistribute copyrighted audio content.
+Rhythm uses YouTube APIs for music discovery and playback. All media content belongs to its respective owners. This project does not host or distribute copyrighted content.
 
 ---
 
@@ -209,16 +168,12 @@ Rhythm uses YouTube APIs for music discovery and playback. All media content bel
 
 Contributions, issues, and feature requests are welcome.
 
-Feel free to fork the project and submit a pull request.
+Feel free to fork the repository and submit a pull request.
 
 ---
 
+<div align="center">
 
-Made with ❤️ by Ankit Bhagat
-````
+Made with ❤️ by **Ankit Bhagat**
 
-```md
-# Rhythm 🎵
-
-Discover, play, and organize your favorite music with a seamless YouTube-powered listening experience.
-```
+</div>
