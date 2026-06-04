@@ -1,16 +1,28 @@
 import { useState } from "react";
 
-type Video = {
-  id: string;
-  title: string;
-  thumbnail: string;
-};
+interface VideoItem {
+  id: {
+    videoId: string;
+  };
+  snippet: {
+    title: string;
+    thumbnails: {
+      high: {
+        url: string;
+      };
+    };
+  };
+}
+
+interface YouTubeResponse {
+  items: VideoItem[];
+}
 
 const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
 
-export default function YouTubeSearch() {
+export default function App() {
   const [query, setQuery] = useState("");
-  const [videos, setVideos] = useState<Video[]>([]);
+  const [ytData, setYtData] = useState<YouTubeResponse | null>(null);
   const [loading, setLoading] = useState(false);
 
   const searchVideos = async () => {
@@ -29,15 +41,9 @@ export default function YouTubeSearch() {
         throw new Error("Failed to fetch videos");
       }
 
-      const data = await response.json();
+      const data: YouTubeResponse = await response.json();
 
-      const formattedVideos: Video[] = data.items.map((item: any) => ({
-        id: item.id.videoId,
-        title: item.snippet.title,
-        thumbnail: item.snippet.thumbnails.high.url,
-      }));
-
-      setVideos(formattedVideos);
+      setYtData(data);
     } catch (error) {
       console.error(error);
     } finally {
@@ -45,8 +51,10 @@ export default function YouTubeSearch() {
     }
   };
 
+  const firstVideo = ytData?.items?.[0];
+
   return (
-    <div>
+    <div className="h-full min-h-screen w-full bg-zinc-900 text-white">
       <h1>YouTube Search</h1>
 
       <input
@@ -60,14 +68,16 @@ export default function YouTubeSearch() {
 
       {loading && <p>Loading...</p>}
 
-      <div>
-        {videos.map((video) => (
-          <div key={video.id}>
-            <img src={video.thumbnail} alt={video.title} width={250} />
-            <h3>{video.title}</h3>
-          </div>
-        ))}
-      </div>
+      {firstVideo && (
+        <div>
+          <img
+            src={firstVideo.snippet.thumbnails.high.url}
+            alt={firstVideo.snippet.title}
+          />
+          <p>{firstVideo.id.videoId}</p>
+          <p>{firstVideo.snippet.title}</p>
+        </div>
+      )}
     </div>
   );
 }
