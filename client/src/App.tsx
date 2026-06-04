@@ -70,12 +70,21 @@ export default function App() {
 
       {firstVideo && (
         <div>
-          <img
+          {/* <img
             src={firstVideo.snippet.thumbnails.high.url}
             alt={firstVideo.snippet.title}
           />
           <p>{firstVideo.id.videoId}</p>
-          <p>{firstVideo.snippet.title}</p>
+          <p>{firstVideo.snippet.title}</p> */}
+
+          <iframe
+            width="560"
+            height="315"
+            src={`https://www.youtube.com/embed/${firstVideo.id.videoId}`}
+            title={firstVideo.snippet.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
         </div>
       )}
     </div>
