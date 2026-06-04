@@ -23,6 +23,7 @@ const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
 export default function App() {
   const [query, setQuery] = useState("");
   const [ytData, setYtData] = useState<YouTubeResponse | null>(null);
+  const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const searchVideos = async () => {
@@ -85,6 +86,9 @@ export default function App() {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           />
+          <button onClick={() => setSelectedVideoId(firstVideo.id.videoId)}>
+            Play
+          </button>
         </div>
       )}
     </div>
