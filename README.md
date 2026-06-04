@@ -1,6 +1,6 @@
 # Rhythm 🎵
 
-**Rhythm** is a modern music player web application built with **React**, **TypeScript**, **Node.js**, and the **YouTube API**. Search for your favorite songs, explore music, and play tracks directly from YouTube through a clean and responsive interface.
+A music player
 
 ---
 
@@ -12,71 +12,6 @@
 * ⏯️ Play and pause controls
 * 📱 Fully responsive design
 * ⚡ Fast and modern user experience
-
----
-
-## 🛠️ Tech Stack
-
-### Frontend
-
-* React
-* TypeScript
-* Tailwind CSS
-* React Router
-* Axios
-
-### Backend
-
-* Node.js
-* Express.js
-
-### Database
-
-* MongoDB
-
-### APIs
-
-* YouTube Data API v3
-* YouTube IFrame Player API
-
----
-
-## 📁 Project Structure
-
-```bash
-rhythm/
-│
-├── client/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   ├── hooks/
-│   │   └── App.tsx
-│   │
-│   └── public/
-│
-├── server/
-│   ├── controllers/
-│   ├── routes/
-│   ├── models/
-│   ├── middleware/
-│   └── server.ts
-│
-└── README.md
-```
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-Make sure you have the following installed:
-
-* Node.js
-* MongoDB
-* YouTube API Key
 
 ---
 
@@ -98,37 +33,19 @@ cd client
 npm install
 ```
 
-#### Backend
 
-```bash
-cd ../server
-npm install
-```
-
----
 
 ## 🔑 Environment Variables
 
 Create a `.env` file and add the following variables:
 
 ```env
-VITE_YOUTUBE_API_KEY=your_youtube_api_key
 
-MONGO_URI=your_mongodb_connection_string
-
-PORT=5000
 ```
 
 ---
 
 ## ▶️ Running the Application
-
-### Start Backend Server
-
-```bash
-cd server
-npm run dev
-```
 
 ### Start Frontend Application
 
@@ -142,19 +59,6 @@ Open your browser and visit:
 ```txt
 http://localhost:5173
 ```
-
----
-
-## 🎯 Future Improvements
-
-* User Authentication
-* Liked Songs
-* Custom Playlists
-* Recently Played Songs
-* Listening History
-* Recommendations
-* Queue Management
-* Shuffle & Repeat Controls
 
 ---
 
