@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { IoSearch } from "react-icons/io5";
+import demoThumbnail from "./assets/rhythm-thumbnail.png";
 
 interface VideoItem {
   id: {
@@ -45,6 +47,7 @@ export default function App() {
       const data: YouTubeResponse = await response.json();
 
       setYtData(data);
+      console.log(data);
     } catch (error) {
       console.error(error);
     } finally {
@@ -55,42 +58,61 @@ export default function App() {
   const firstVideo = ytData?.items?.[0];
 
   return (
-    <div className="h-full min-h-screen w-full bg-zinc-900 text-white">
-      <h1>YouTube Search</h1>
+    <div className="h-full min-h-screen w-full flex flex-col items-center justify-center gap-5">
+      <h1 className="text-2xl">Rhythm</h1>
 
-      <input
-        type="text"
-        placeholder="Search songs..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-
-      <button onClick={searchVideos}>Search</button>
-
-      {loading && <p>Loading...</p>}
+      {!firstVideo && (
+        <div className="flex flex-col items-start">
+          <img
+            src={demoThumbnail}
+            alt="demoThumbnail"
+            className="h-80 w-auto rounded-2xl"
+          />
+          <label className="mt-4">
+            Now playing: <span></span>
+          </label>
+        </div>
+      )}
 
       {firstVideo && (
-        <div>
-          {/* <img
+        <div className="flex flex-col items-start">
+          <img
             src={firstVideo.snippet.thumbnails.high.url}
             alt={firstVideo.snippet.title}
+            className="h-100 w-auto rounded-2xl"
           />
-          <p>{firstVideo.id.videoId}</p>
-          <p>{firstVideo.snippet.title}</p> */}
+          {/* <p>{firstVideo.id.videoId}</p> */}
+          <label className="mt-4">
+            Now playing: <span>{firstVideo.snippet.title}</span>
+          </label>
 
           <iframe
-            width="560"
-            height="315"
+            width="500"
+            height="10"
+            // className="h-1 w-133 rounded-2xl"
             src={`https://www.youtube.com/embed/${firstVideo.id.videoId}`}
             title={firstVideo.snippet.title}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           />
+
           <button onClick={() => setSelectedVideoId(firstVideo.id.videoId)}>
             Play
           </button>
         </div>
       )}
+      <div className="border border-zinc-600 px-2 py-1 rounded-lg flex items-center">
+        <input
+          type="text"
+          placeholder="Search songs..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="outline-none w-60"
+        />
+        <button onClick={searchVideos} className="outline-none">
+          <IoSearch />
+        </button>
+      </div>
     </div>
   );
 }
