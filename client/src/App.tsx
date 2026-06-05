@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { IoSearch } from "react-icons/io5";
 import demoThumbnail from "./assets/rhythm-thumbnail.png";
 
@@ -28,6 +28,8 @@ export default function App() {
   const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const searchVideos = async () => {
     if (!query.trim()) return;
 
@@ -54,6 +56,21 @@ export default function App() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "/") {
+        e.preventDefault(); // prevents "/" from being typed immediately
+        inputRef.current?.focus();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   const firstVideo = ytData?.items?.[0];
 
@@ -101,18 +118,25 @@ export default function App() {
           </button>
         </div>
       )}
-      <div className="border border-zinc-600 px-2 py-1 rounded-lg flex items-center">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          searchVideos();
+        }}
+        className="border border-zinc-600 px-2 py-1 rounded-lg flex items-center"
+      >
         <input
           type="text"
-          placeholder="Search songs..."
+          ref={inputRef}
+          placeholder="Press / to focus"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="outline-none w-60"
         />
-        <button onClick={searchVideos} className="outline-none">
+        <button onClick={searchVideos} type="submit" className="outline-none">
           <IoSearch />
         </button>
-      </div>
+      </form>
     </div>
   );
 }
