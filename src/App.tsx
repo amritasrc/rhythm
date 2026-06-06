@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { IoSearch } from "react-icons/io5";
+import YouTube from "react-youtube";
 import demoThumbnail from "./assets/rhythm-thumbnail.png";
 
 interface VideoItem {
@@ -25,9 +26,14 @@ const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
 export default function App() {
   const [query, setQuery] = useState("");
   const [ytData, setYtData] = useState<YouTubeResponse | null>(null);
-  const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
+  const [selectedVideo, setSelectedVideo] = useState<VideoItem | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+
+  const playerRef = useRef<any>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const searchVideos = async () => {
@@ -49,7 +55,10 @@ export default function App() {
       const data: YouTubeResponse = await response.json();
 
       setYtData(data);
-      console.log(data);
+
+      if (data.items.length > 0) {
+        setSelectedVideo(data.items[0]);
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -57,10 +66,52 @@ export default function App() {
     }
   };
 
+  const handlePlayerReady = (event: any) => {
+    playerRef.current = event.target;
+
+    setTimeout(() => {
+      setDuration(playerRef.current.getDuration());
+      playerRef.current.playVideo();
+      setIsPlaying(true);
+    }, 500);
+  };
+
+  const togglePlayPause = () => {
+    if (!playerRef.current) return;
+
+    const state = playerRef.current.getPlayerState();
+
+    if (state === 1) {
+      playerRef.current.pauseVideo();
+      setIsPlaying(false);
+    } else {
+      playerRef.current.playVideo();
+      setIsPlaying(true);
+    }
+  };
+
+  const seekVideo = (value: number) => {
+    if (!playerRef.current) return;
+
+    playerRef.current.seekTo(value, true);
+    setCurrentTime(value);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (playerRef.current) {
+        setCurrentTime(playerRef.current.getCurrentTime());
+        setDuration(playerRef.current.getDuration());
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "/") {
-        e.preventDefault(); // prevents "/" from being typed immediately
+        e.preventDefault();
         inputRef.current?.focus();
       }
     };
@@ -72,56 +123,72 @@ export default function App() {
     };
   }, []);
 
-  const firstVideo = ytData?.items?.[0];
-
   return (
-    <div className="h-full min-h-screen w-full flex flex-col items-center justify-center gap-5">
-      <h1 className="text-2xl">Rhythm</h1>
+    <div className="min-h-screen w-full flex flex-col items-center justify-center gap-6 p-6">
+      <h1 className="text-3xl font-bold">Rhythm 🎵</h1>
 
-      {!firstVideo && (
+      {!selectedVideo ? (
         <div className="flex flex-col items-start">
+          <img src={demoThumbnail} alt="Rhythm" className="h-80 rounded-2xl" />
+
+          <p className="mt-4">Search for a song to start listening.</p>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center gap-4 w-full max-w-xl">
           <img
-            src={demoThumbnail}
-            alt="demoThumbnail"
-            className="h-80 w-auto rounded-2xl"
+            src={selectedVideo.snippet.thumbnails.high.url}
+            alt={selectedVideo.snippet.title}
+            className="w-full rounded-2xl"
           />
-          <label className="mt-4">
-            Now playing: <span></span>
-          </label>
+
+          <h2 className="text-center font-semibold">
+            {selectedVideo.snippet.title}
+          </h2>
+
+          <YouTube
+            videoId={selectedVideo.id.videoId}
+            onReady={handlePlayerReady}
+            opts={{
+              width: "0",
+              height: "0",
+              playerVars: {
+                autoplay: 1,
+              },
+            }}
+          />
+
+          <div className="w-full">
+            <input
+              type="range"
+              min={0}
+              max={duration}
+              value={currentTime}
+              onChange={(e) => seekVideo(Number(e.target.value))}
+              className="w-full"
+            />
+          </div>
+
+          <div className="flex gap-4">
+            <button
+              onClick={togglePlayPause}
+              className="px-4 py-2 rounded-lg border"
+            >
+              {isPlaying ? "Pause" : "Play"}
+            </button>
+          </div>
+
+          <p>
+            {Math.floor(currentTime)}s / {Math.floor(duration)}s
+          </p>
         </div>
       )}
 
-      {firstVideo && (
-        <div className="flex flex-col items-start">
-          <img
-            src={firstVideo.snippet.thumbnails.high.url}
-            alt={firstVideo.snippet.title}
-            className="h-100 w-auto rounded-2xl"
-          />
-          <iframe
-            width="530"
-            height="300"
-            src={`https://www.youtube.com/embed/${firstVideo.id.videoId}?autoplay=1`}
-            title={firstVideo.snippet.title}
-            allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-          {/* <p>{firstVideo.id.videoId}</p> */}
-          <label className="mt-4">
-            Now playing: <span>{firstVideo.snippet.title}</span>
-          </label>
-
-          <button onClick={() => setSelectedVideoId(firstVideo.id.videoId)}>
-            Play
-          </button>
-        </div>
-      )}
       <form
         onSubmit={(e) => {
           e.preventDefault();
           searchVideos();
         }}
-        className="border border-zinc-600 px-2 py-1 rounded-lg flex items-center"
+        className="border border-zinc-600 px-3 py-2 rounded-lg flex items-center gap-2"
       >
         <input
           type="text"
@@ -129,9 +196,10 @@ export default function App() {
           placeholder="Press / to focus"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="outline-none w-60"
+          className="outline-none w-72"
         />
-        <button onClick={searchVideos} type="submit" className="outline-none">
+
+        <button type="submit">
           <IoSearch />
         </button>
       </form>
