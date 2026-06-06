@@ -126,6 +126,13 @@ export default function App() {
     };
   }, []);
 
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  };
+
   return (
     <div className="min-h-screen w-full flex flex-col items-center gap-6 px-6 py-20">
       <h1 className="text-3xl font-bold">Rhythm 🎵</h1>
@@ -158,7 +165,8 @@ export default function App() {
             }}
           />
 
-          <div className="w-full">
+          <div className="w-full flex gap-2 items-center">
+            <p>{formatTime(currentTime)}</p>
             <input
               type="range"
               min={0}
@@ -167,6 +175,7 @@ export default function App() {
               onChange={(e) => seekVideo(Number(e.target.value))}
               className="w-full"
             />
+            <p>{formatTime(duration)}</p>
           </div>
 
           <div className="flex gap-4 text-sm">
@@ -177,10 +186,6 @@ export default function App() {
               {isPlaying ? <FaPause /> : <FaPlay />}
             </button>
           </div>
-
-          <p>
-            {Math.floor(currentTime)}s / {Math.floor(duration)}s
-          </p>
         </div>
       )}
 
