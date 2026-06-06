@@ -215,15 +215,15 @@ export default function App() {
             <button
               key={video.id.videoId}
               onClick={() => setSelectedVideo(video)}
-              className="flex items-center gap-3 p-2 rounded-lg border text-left hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              className="flex items-center gap-3 p-2 rounded-lg border border-zinc-700 text-left hover:bg-zinc-100 dark:hover:bg-zinc-800"
             >
               <img
                 src={video.snippet.thumbnails.high.url}
                 alt={video.snippet.title}
-                className="w-20 rounded"
+                className="w-20 rounded-lg"
               />
 
-              <span>{video.snippet.title}</span>
+              <span className="text-zinc-400 hover:text-zinc-200">{video.snippet.title}</span>
             </button>
           ))}
         </div>
