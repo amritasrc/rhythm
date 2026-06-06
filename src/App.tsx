@@ -203,6 +203,30 @@ export default function App() {
           <IoSearch />
         </button>
       </form>
+
+      {loading && <p>Loading...</p>}
+
+      {ytData && ytData.items.length > 0 && (
+        <div className="w-full max-w-xl flex flex-col gap-2">
+          <h3 className="font-semibold">Search Results</h3>
+
+          {ytData.items.map((video) => (
+            <button
+              key={video.id.videoId}
+              onClick={() => setSelectedVideo(video)}
+              className="flex items-center gap-3 p-2 rounded-lg border text-left hover:bg-zinc-100 dark:hover:bg-zinc-800"
+            >
+              <img
+                src={video.snippet.thumbnails.high.url}
+                alt={video.snippet.title}
+                className="w-20 rounded"
+              />
+
+              <span>{video.snippet.title}</span>
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
