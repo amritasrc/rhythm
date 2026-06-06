@@ -62,6 +62,7 @@ export default function App() {
       if (data.items.length > 0) {
         setSelectedVideo(data.items[0]);
       }
+      inputRef.current?.blur();
     } catch (error) {
       console.error(error);
     } finally {
