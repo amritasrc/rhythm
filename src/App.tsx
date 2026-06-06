@@ -55,6 +55,7 @@ export default function App() {
       const data: YouTubeResponse = await response.json();
 
       setYtData(data);
+      setQuery("");
 
       if (data.items.length > 0) {
         setSelectedVideo(data.items[0]);
