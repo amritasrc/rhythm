@@ -125,7 +125,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center gap-6 p-6">
+    <div className="min-h-screen w-full flex flex-col items-center gap-6 px-6 py-20">
       <h1 className="text-3xl font-bold">Rhythm 🎵</h1>
 
       {!selectedVideo ? (
@@ -139,7 +139,7 @@ export default function App() {
           <img
             src={selectedVideo.snippet.thumbnails.high.url}
             alt={selectedVideo.snippet.title}
-            className="w-full rounded-2xl"
+            className="w-full h-80 object-cover rounded-2xl border"
           />
 
           <h2 className="text-center font-semibold">
