@@ -98,20 +98,18 @@ export default function App() {
             alt={firstVideo.snippet.title}
             className="h-100 w-auto rounded-2xl"
           />
+          <iframe
+            width="530"
+            height="300"
+            src={`https://www.youtube.com/embed/${firstVideo.id.videoId}?autoplay=1`}
+            title={firstVideo.snippet.title}
+            allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
           {/* <p>{firstVideo.id.videoId}</p> */}
           <label className="mt-4">
             Now playing: <span>{firstVideo.snippet.title}</span>
           </label>
-
-          <iframe
-            width="500"
-            height="10"
-            // className="h-1 w-133 rounded-2xl"
-            src={`https://www.youtube.com/embed/${firstVideo.id.videoId}`}
-            title={firstVideo.snippet.title}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
 
           <button onClick={() => setSelectedVideoId(firstVideo.id.videoId)}>
             Play
