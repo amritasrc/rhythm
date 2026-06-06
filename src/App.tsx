@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from "react";
-import { IoSearch } from "react-icons/io5";
 import YouTube from "react-youtube";
 import demoThumbnail from "./assets/rhythm-thumbnail.png";
+import { IoSearch } from "react-icons/io5";
+import { FaPause } from "react-icons/fa6";
+import { FaPlay } from "react-icons/fa6";
 
 interface VideoItem {
   id: {
@@ -139,12 +141,10 @@ export default function App() {
           <img
             src={selectedVideo.snippet.thumbnails.high.url}
             alt={selectedVideo.snippet.title}
-            className="w-full h-80 object-cover rounded-2xl border"
+            className="w-full h-80 object-cover rounded-2xl border border-zinc-700"
           />
 
-          <h2 className="text-center font-semibold">
-            {selectedVideo.snippet.title}
-          </h2>
+          <h2 className="text-center">{selectedVideo.snippet.title}</h2>
 
           <YouTube
             videoId={selectedVideo.id.videoId}
@@ -169,12 +169,12 @@ export default function App() {
             />
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex gap-4 text-sm">
             <button
               onClick={togglePlayPause}
               className="px-4 py-2 rounded-lg border"
             >
-              {isPlaying ? "Pause" : "Play"}
+              {isPlaying ? <FaPause /> : <FaPlay />}
             </button>
           </div>
 
@@ -223,7 +223,9 @@ export default function App() {
                 className="w-20 rounded-lg"
               />
 
-              <span className="text-zinc-400 hover:text-zinc-200">{video.snippet.title}</span>
+              <span className="text-zinc-400 hover:text-zinc-200">
+                {video.snippet.title}
+              </span>
             </button>
           ))}
         </div>
