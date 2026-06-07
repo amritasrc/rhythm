@@ -28,9 +28,6 @@
 
 ![Search Results](src/assets/screenshots/S3.png)
 
-### Demo Video
-
-<video controls src="src/assets/screenshots/demo_video.mp4" title="Demo Video"></video>
 ---
 
 ## ✨ Features
