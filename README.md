@@ -1,7 +1,7 @@
 # Rhythm 🎵
 
 <p align="center">
-  <img src="src/assets/rhythm-thumbnail.png" alt="Rhythm Banner" width="100%" />
+  <img src="src/assets/rhythm-thumbnail.png" alt="Rhythm Banner" width="50%" />
 </p>
 
 <p align="center">
