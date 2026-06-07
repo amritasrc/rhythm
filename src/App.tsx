@@ -57,6 +57,7 @@ export default function App() {
       const data: YouTubeResponse = await response.json();
 
       setYtData(data);
+      console.log(data);
       setQuery("");
 
       if (data.items.length > 0) {

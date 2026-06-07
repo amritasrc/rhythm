@@ -1,70 +1,134 @@
 # Rhythm 🎵
 
-A music player
+<p align="center">
+  <img src="./screenshots/banner.png" alt="Rhythm Banner" width="100%" />
+</p>
+
+<p align="center">
+  A modern music player built with React, TypeScript, Tailwind CSS, and the YouTube Data API.
+</p>
+
+<p align="center">
+  Search songs, play music instantly, control playback with keyboard shortcuts, and enjoy a clean Spotify-inspired experience.
+</p>
+
+---
+
+## 📸 Screenshots
+
+### Home Screen
+
+![Home Screen](src/assets/screenshots/S1.png)
+
+### Music Player
+
+![Music Player](src/assets/screenshots/S2.png)
+
+### Search Results
+
+![Search Results](src/assets/screenshots/S3.png)
+
+### Demo Video
+
+<video controls src="src/assets/screenshots/demo_video.mov" title="Demo Video"></video>
 
 ---
 
 ## ✨ Features
 
 * 🔍 Search songs using the YouTube Data API
-* 🖼️ Display song thumbnails and details
-* ⏯️ Play and pause controls
-* 📱 Fully responsive design
-* ⚡ Fast and modern user experience
+* 🎵 Instant music playback
+* ⏯️ Play / Pause controls
+* ⌨️ Keyboard shortcuts support
+* 📊 Interactive progress slider
+* 🖼️ High-quality thumbnails
+* ⚡ Fast and responsive UI
+* 📱 Mobile-friendly design
 
 ---
 
-### Clone the Repository
+## ⌨️ Keyboard Shortcuts
+
+| Key     | Action                  |
+| ------- | ----------------------- |
+| `/`     | Focus search bar        |
+| `Enter` | Search button           |
+| `Space` | Play / Pause            |
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+* React
+* TypeScript
+* Tailwind CSS
+* React Icons
+* React YouTube
+
+### APIs
+
+* YouTube Data API v3
+* YouTube IFrame Player API
+
+---
+
+## 🚀 Getting Started
+
+### Clone Repository
 
 ```bash
 git clone https://github.com/ankitsensei/rhythm.git
 cd rhythm
 ```
 
----
-
 ### Install Dependencies
 
-#### Frontend
-
 ```bash
-cd client
 npm install
 ```
 
----
+### Environment Variables
 
-## 🔑 Environment Variables
-
-Create a `.env` file and add the following variables:
+Create a `.env` file:
 
 ```env
 VITE_YOUTUBE_API_KEY=your_youtube_api_key
+```
 
+### Start Development Server
+
+```bash
+npm run dev
+```
+
+Visit:
+
+```text
+http://localhost:5173
 ```
 
 ---
 
-## ▶️ Running the Application
+## 📂 Project Structure
 
-### Start Frontend Application
-
-```bash
-cd client
-npm run dev
-```
-
-Open your browser and visit:
-
-```txt
-http://localhost:5173
+```text
+src/
+├── assets/
+├── components/
+├── App.tsx
+├── main.tsx
+└── index.css
 ```
 
 ---
 
 ## ⚠️ Disclaimer
 
-Rhythm uses YouTube APIs for music discovery and playback. All media content belongs to its respective owners. This project does not host or distribute copyrighted content.
+Rhythm uses YouTube APIs for music discovery and playback.
+
+All media content belongs to its respective copyright owners. This project does not host, store, or distribute copyrighted media.
 
 ---
 
@@ -72,12 +136,21 @@ Rhythm uses YouTube APIs for music discovery and playback. All media content bel
 
 Contributions, issues, and feature requests are welcome.
 
-Feel free to fork the repository and submit a pull request.
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Open a Pull Request
 
 ---
 
-<div align="center">
+## 💙 Author
 
-Made with ❤️ by **Ankit Bhagat**
+**Ankit Bhagat**
 
-</div>
+GitHub: https://github.com/ankitsensei
+
+---
+
+<p align="center">
+Made with ❤️ and lots of music.
+</p>
