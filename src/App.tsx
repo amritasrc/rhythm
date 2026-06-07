@@ -166,7 +166,7 @@ export default function App() {
 
       {!selectedVideo ? (
         <div className="flex flex-col items-start">
-          <img src={demoThumbnail} alt="Rhythm" className="h-80 rounded-2xl" />
+          <img src={demoThumbnail} alt="Rhythm" className="h-80 rounded-2xl object-cover" />
 
           <p className="mt-4">Search for a song to start listening.</p>
         </div>
