@@ -7,6 +7,9 @@ import { FaPlay } from "react-icons/fa6";
 import { FaVolumeHigh } from "react-icons/fa6";
 import { FaVolumeLow } from "react-icons/fa6";
 import { FaVolumeOff } from "react-icons/fa6";
+import { TbRepeatOff } from "react-icons/tb";
+import { TbRepeatOnce } from "react-icons/tb";
+import { TbRepeat } from "react-icons/tb";
 
 interface VideoItem {
   id: {
@@ -272,11 +275,11 @@ export default function App() {
             </button>
             <button
               onClick={toggleRepeat}
-              className="px-4 py-2 rounded-lg border"
+              className="px-2 py text-2xl rounded-lg border"
             >
-              {repeatMode === "off" && "Repeat Off"}
-              {repeatMode === "one" && "Repeat One"}
-              {repeatMode === "all" && "Repeat All"}
+              {repeatMode === "off" && <TbRepeatOff />}
+              {repeatMode === "one" && <TbRepeatOnce />}
+              {repeatMode === "all" && <TbRepeat />}
             </button>
             <div className="flex items-center justify-between">
               <div className="flex items-center justify-center gap-2">
