@@ -5,6 +5,7 @@ import { IoSearch } from "react-icons/io5";
 import { FaPause } from "react-icons/fa6";
 import { FaPlay } from "react-icons/fa6";
 
+
 interface VideoItem {
   id: {
     videoId: string;
@@ -34,6 +35,7 @@ export default function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+  const [volume, setVolume] = useState(100);
 
   const playerRef = useRef<any>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -76,9 +78,20 @@ export default function App() {
 
     setTimeout(() => {
       setDuration(playerRef.current.getDuration());
+
+      playerRef.current.setVolume(100);
+      setVolume(100);
+
       playerRef.current.playVideo();
       setIsPlaying(true);
     }, 500);
+  };
+
+  const handleVolumeChange = (value: number) => {
+    if (!playerRef.current) return;
+
+    playerRef.current.setVolume(value);
+    setVolume(value);
   };
 
   const togglePlayPause = () => {
@@ -166,7 +179,11 @@ export default function App() {
 
       {!selectedVideo ? (
         <div className="flex flex-col items-start">
-          <img src={demoThumbnail} alt="Rhythm" className="h-80 rounded-2xl object-cover" />
+          <img
+            src={demoThumbnail}
+            alt="Rhythm"
+            className="h-80 rounded-2xl object-cover"
+          />
 
           <p className="mt-4">Search for a song to start listening.</p>
         </div>
@@ -212,6 +229,19 @@ export default function App() {
             >
               {isPlaying ? <FaPause /> : <FaPlay />}
             </button>
+            <div className="w-full flex items-center gap-2">
+              <span>🔉</span>
+
+              <input
+                type="range"
+                min={0}
+                max={100}
+                value={volume}
+                onChange={(e) => handleVolumeChange(Number(e.target.value))}
+                className="w-full"
+              />
+              <span>{volume}%</span>
+            </div>
           </div>
         </div>
       )}
