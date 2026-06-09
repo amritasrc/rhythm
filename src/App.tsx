@@ -45,6 +45,7 @@ export default function App() {
   const [volume, setVolume] = useState(100);
   const [repeatMode, setRepeatMode] = useState<RepeatMode>("off");
   const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(true);
 
   const playerRef = useRef<any>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -80,12 +81,6 @@ export default function App() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const selectSuggestion = (suggestion: string) => {
-    setQuery(suggestion);
-    setSuggestions([]);
-    searchVideos(suggestion);
   };
 
   const handlePlayerReady = (event: any) => {
@@ -240,13 +235,22 @@ export default function App() {
     };
   }, []);
 
+  const selectSuggestion = (suggestion: string) => {
+    setShowSuggestions(false);
+    setQuery(suggestion);
+    setSuggestions([]);
+    searchVideos(suggestion);
+  };
+
   useEffect(() => {
+    if (!showSuggestions) return;
+
     const timer = setTimeout(() => {
       fetchSuggestions(query);
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [query]);
+  }, [query, showSuggestions]);
 
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
@@ -356,11 +360,14 @@ export default function App() {
             ref={inputRef}
             placeholder="Press / to focus"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              setShowSuggestions(true);
+              setQuery(e.target.value);
+            }}
             className="outline-none w-72"
           />
 
-          {suggestions.length > 0 && (
+          {showSuggestions && suggestions.length > 0 && (
             <div className="absolute top-full left-0 mt-2 w-full rounded-lg border border-zinc-600 bg-white dark:bg-zinc-900 shadow-lg z-50">
               {suggestions.map((item) => (
                 <button
