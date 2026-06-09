@@ -26,6 +26,8 @@ interface YouTubeResponse {
   items: VideoItem[];
 }
 
+type RepeatMode = "off" | "one" | "all";
+
 const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
 
 export default function App() {
@@ -38,6 +40,7 @@ export default function App() {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [volume, setVolume] = useState(100);
+  const [repeatMode, setRepeatMode] = useState<RepeatMode>("off");
 
   const playerRef = useRef<any>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -115,6 +118,41 @@ export default function App() {
 
     playerRef.current.seekTo(value, true);
     setCurrentTime(value);
+  };
+
+  const toggleRepeat = () => {
+    setRepeatMode((prev) => {
+      if (prev === "off") return "one";
+      if (prev === "one") return "all";
+      return "off";
+    });
+  };
+
+  const handleVideoEnd = () => {
+    if (!playerRef.current) return;
+
+    // Repeat current song
+    if (repeatMode === "one") {
+      playerRef.current.seekTo(0);
+      playerRef.current.playVideo();
+      return;
+    }
+
+    // Repeat playlist
+    if (repeatMode === "all" && ytData) {
+      const currentIndex = ytData.items.findIndex(
+        (video) => video.id.videoId === selectedVideo?.id.videoId,
+      );
+
+      const nextIndex =
+        currentIndex === ytData.items.length - 1 ? 0 : currentIndex + 1;
+
+      setSelectedVideo(ytData.items[nextIndex]);
+      return;
+    }
+
+    // repeatMode === "off"
+    setIsPlaying(false);
   };
 
   useEffect(() => {
@@ -202,6 +240,7 @@ export default function App() {
           <YouTube
             videoId={selectedVideo.id.videoId}
             onReady={handlePlayerReady}
+            onEnd={handleVideoEnd}
             opts={{
               width: "0",
               height: "0",
@@ -230,6 +269,14 @@ export default function App() {
               className="px-4 py-2 rounded-lg border"
             >
               {isPlaying ? <FaPause /> : <FaPlay />}
+            </button>
+            <button
+              onClick={toggleRepeat}
+              className="px-4 py-2 rounded-lg border"
+            >
+              {repeatMode === "off" && "Repeat Off"}
+              {repeatMode === "one" && "Repeat One"}
+              {repeatMode === "all" && "Repeat All"}
             </button>
             <div className="flex items-center justify-between">
               <div className="flex items-center justify-center gap-2">
