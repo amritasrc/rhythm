@@ -4,7 +4,9 @@ import demoThumbnail from "./assets/rhythm-thumbnail.png";
 import { IoSearch } from "react-icons/io5";
 import { FaPause } from "react-icons/fa6";
 import { FaPlay } from "react-icons/fa6";
-
+import { FaVolumeHigh } from "react-icons/fa6";
+import { FaVolumeLow } from "react-icons/fa6";
+import { FaVolumeOff } from "react-icons/fa6";
 
 interface VideoItem {
   id: {
@@ -222,25 +224,31 @@ export default function App() {
             <p>{formatTime(duration)}</p>
           </div>
 
-          <div className="flex gap-4 text-sm">
+          <div className="flex gap-4 text-sm w-full justify-between">
             <button
               onClick={togglePlayPause}
               className="px-4 py-2 rounded-lg border"
             >
               {isPlaying ? <FaPause /> : <FaPlay />}
             </button>
-            <div className="w-full flex items-center gap-2">
-              <span>🔉</span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center justify-center gap-2">
+                <span>
+                  {volume > 60 && <FaVolumeHigh />}
+                  {volume > 0 && volume < 60 && <FaVolumeLow />}
+                  {volume == 0 && <FaVolumeOff />}
+                </span>
 
-              <input
-                type="range"
-                min={0}
-                max={100}
-                value={volume}
-                onChange={(e) => handleVolumeChange(Number(e.target.value))}
-                className="w-full"
-              />
-              <span>{volume}%</span>
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  value={volume}
+                  onChange={(e) => handleVolumeChange(Number(e.target.value))}
+                  className="w-40"
+                />
+                <span className="w-8">{volume}%</span>
+              </div>
             </div>
           </div>
         </div>
