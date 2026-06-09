@@ -44,19 +44,20 @@ export default function App() {
   const [currentTime, setCurrentTime] = useState(0);
   const [volume, setVolume] = useState(100);
   const [repeatMode, setRepeatMode] = useState<RepeatMode>("off");
+  const [suggestions, setSuggestions] = useState<string[]>([]);
 
   const playerRef = useRef<any>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const searchVideos = async () => {
-    if (!query.trim()) return;
+  const searchVideos = async (searchTerm = query) => {
+    if (!searchTerm.trim()) return;
 
     try {
       setLoading(true);
 
       const response = await fetch(
         `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(
-          query,
+          searchTerm,
         )}&maxResults=10&key=${API_KEY}`,
       );
 
@@ -67,18 +68,24 @@ export default function App() {
       const data: YouTubeResponse = await response.json();
 
       setYtData(data);
-      console.log(data);
-      setQuery("");
+      setSuggestions([]);
 
       if (data.items.length > 0) {
         setSelectedVideo(data.items[0]);
       }
+
       inputRef.current?.blur();
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const selectSuggestion = (suggestion: string) => {
+    setQuery(suggestion);
+    setSuggestions([]);
+    searchVideos(suggestion);
   };
 
   const handlePlayerReady = (event: any) => {
@@ -158,6 +165,30 @@ export default function App() {
     setIsPlaying(false);
   };
 
+  const fetchSuggestions = async (searchQuery: string) => {
+    if (searchQuery.trim().length < 3) {
+      setSuggestions([]);
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(
+          searchQuery,
+        )}&maxResults=5&key=${API_KEY}`,
+      );
+
+      const data: YouTubeResponse = await response.json();
+
+      const titles = [...new Set(data.items.map((item) => item.snippet.title))];
+
+      setSuggestions(titles);
+    } catch (error) {
+      console.error(error);
+      setSuggestions([]);
+    }
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
       if (playerRef.current) {
@@ -208,6 +239,14 @@ export default function App() {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchSuggestions(query);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [query]);
 
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
@@ -311,14 +350,31 @@ export default function App() {
         }}
         className="border border-zinc-600 px-3 py-2 rounded-lg flex items-center gap-2"
       >
-        <input
-          type="text"
-          ref={inputRef}
-          placeholder="Press / to focus"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="outline-none w-72"
-        />
+        <div className="relative">
+          <input
+            type="text"
+            ref={inputRef}
+            placeholder="Press / to focus"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="outline-none w-72"
+          />
+
+          {suggestions.length > 0 && (
+            <div className="absolute top-full left-0 mt-2 w-full rounded-lg border border-zinc-600 bg-white dark:bg-zinc-900 shadow-lg z-50">
+              {suggestions.map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => selectSuggestion(item)}
+                  className="block w-full text-left px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
         <button type="submit">
           <IoSearch />
