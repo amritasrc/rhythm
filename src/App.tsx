@@ -43,6 +43,7 @@ export default function App() {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [volume, setVolume] = useState(100);
+  const [previousVolume, setPreviousVolume] = useState(100);
   const [repeatMode, setRepeatMode] = useState<RepeatMode>("off");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(true);
@@ -102,6 +103,19 @@ export default function App() {
 
     playerRef.current.setVolume(value);
     setVolume(value);
+  };
+
+  const handleVolMute = () => {
+    if (!playerRef.current) return;
+
+    if (volume > 0) {
+      setPreviousVolume(volume);
+      playerRef.current.setVolume(0);
+      setVolume(0);
+    } else {
+      playerRef.current.setVolume(previousVolume);
+      setVolume(previousVolume);
+    }
   };
 
   const togglePlayPause = () => {
@@ -326,7 +340,8 @@ export default function App() {
             </button>
             <div className="flex items-center justify-between">
               <div className="flex items-center justify-center gap-2">
-                <span>
+                <span onClick={handleVolMute}
+                  className="cursor-pointer">
                   {volume > 60 && <FaVolumeHigh />}
                   {volume > 0 && volume < 60 && <FaVolumeLow />}
                   {volume == 0 && <FaVolumeOff />}
