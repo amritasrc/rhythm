@@ -105,6 +105,7 @@ export default function App() {
     setVolume(value);
   };
 
+  // Handle Volume Mute
   const handleVolMute = () => {
     if (!playerRef.current) return;
 
@@ -342,9 +343,10 @@ export default function App() {
               <div className="flex items-center justify-center gap-2">
                 <span onClick={handleVolMute}
                   className="cursor-pointer">
+                <span>
+                  {volume === 0 && <FaVolumeOff />}
+                  {volume > 0 && volume <= 60 && <FaVolumeLow />}
                   {volume > 60 && <FaVolumeHigh />}
-                  {volume > 0 && volume < 60 && <FaVolumeLow />}
-                  {volume == 0 && <FaVolumeOff />}
                 </span>
 
                 <input
