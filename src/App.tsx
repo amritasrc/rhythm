@@ -327,9 +327,9 @@ export default function App() {
             <div className="flex items-center justify-between">
               <div className="flex items-center justify-center gap-2">
                 <span>
+                  {volume === 0 && <FaVolumeOff />}
+                  {volume > 0 && volume <= 60 && <FaVolumeLow />}
                   {volume > 60 && <FaVolumeHigh />}
-                  {volume > 0 && volume < 60 && <FaVolumeLow />}
-                  {volume == 0 && <FaVolumeOff />}
                 </span>
 
                 <input
